@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class buku extends Model
 {
     use HasFactory;
+
+    protected $primaryKey = 'isbn';
+    protected $keyType = 'string';
 }
