@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('bukus', function (Blueprint $table) {
             $table->char('isbn', 13);
+            $table->string('sampul', 255);
             $table->string('judul', 500);
             $table->string('kategori', 500);
             $table->foreign('kategori')->on('kategoris')->references('kategori');
