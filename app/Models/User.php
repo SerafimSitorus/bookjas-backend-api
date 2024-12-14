@@ -19,10 +19,19 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+     protected $table = 'users';
+     protected $primaryKey = 'id';
+     protected $keyType = 'string';
+     public $timestamps = true;
+     public $incrementing = false;
+
     protected $fillable = [
-        'name',
+        'nama',
         'email',
         'password',
+        'foto_profil',
+        'status',
     ];
 
     /**
