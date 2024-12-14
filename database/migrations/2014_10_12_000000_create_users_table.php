@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('foto_profil')->nullable();
             $table->string('password');
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('token');
+            $table->string('token')->nullable();
             $table->timestamps();
             $table->enum('status', ['User', 'Admin'])->default('User');
         });
