@@ -145,4 +145,14 @@ class UserTest extends TestCase
                 ]
         ]);
     }
+
+    public function testLogoutSuccess() {
+        $this->seed([UserSeeder::class]);
+        $this->post('/api/logout', [
+            'Authorization' => 'luthfi123'
+        ])->assertStatus(200)
+            ->assertJson([
+                "data" => true 
+                ]);
+    }
 }
