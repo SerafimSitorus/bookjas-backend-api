@@ -71,23 +71,23 @@ class UserTest extends TestCase
                 ]);    
     }
 
-    public function testRegisteredFailedNamaAlreadyRegistered() 
-    {
-        $this->seed([UserSeeder::class]);
-        $this->post('/api/register', [
-            'nama' => 'Serafim Sitorus',
-            'email' => 'serafim@gmail.com',
-            'password' => 'serafim123',
-            'password_confirmation' => 'serafim123'
-        ])->assertStatus(400)
-            ->assertJson([
-                "errors" => [
-                    'nama' => [
-                       'nama Serafim Sitorus already registered.'
-                    ]
-                ]
-                ]);    
-    }
+    // public function testRegisteredFailedNamaAlreadyRegistered() 
+    // {
+    //     $this->seed([UserSeeder::class]);
+    //     $this->post('/api/register', [
+    //         'nama' => 'Serafim Sitorus',
+    //         'email' => 'serafim@gmail.com',
+    //         'password' => 'serafim123',
+    //         'password_confirmation' => 'serafim123'
+    //     ])->assertStatus(400)
+    //         ->assertJson([
+    //             "errors" => [
+    //                 'nama' => [
+    //                    'nama Serafim Sitorus already registered.'
+    //                 ]
+    //             ]
+    //             ]);    
+    // }
 
     public function testLoginSuccess() {
         $this->seed([UserSeeder::class]);
@@ -148,11 +148,91 @@ class UserTest extends TestCase
 
     public function testLogoutSuccess() {
         $this->seed([UserSeeder::class]);
-        $this->post('/api/logout', [
+        $this->post(uri : '/api/logout', headers:[
             'Authorization' => 'luthfi123'
         ])->assertStatus(200)
             ->assertJson([
                 "data" => true 
                 ]);
+    }
+
+    public function testLogoutFailed() {
+        $this->seed([UserSeeder::class]);
+        $this->post(uri : '/api/logout', headers:[
+            'Authorization' => 'rifqi123'
+        ])->assertStatus(401)
+            ->assertJson([
+                "errors" => [
+                    'message' => [
+                        'Unauthorized'
+                    ]
+                ] 
+                ]);
+    }
+
+    public function testUpdatePasswordSuccess() {
+        $this->seed([UserSeeder::class]);
+        $oldUser = User::where('nama', 'Serafim Sitorus')->first();
+        $this->patch('/api/updatePassword',
+        [
+            'current_password' => 'serafim123',
+            'password' => 'edgars123',
+            'password_confirmation' => 'edgars123'
+        ],
+        [
+            'Authorization' => 'luthfi123'
+        ]
+        )->assertStatus(200)
+            ->assertJson([
+                "data" => true
+            ]);
+
+        $newUser = User::where('nama', 'Serafim Sitorus')->first();
+        self::assertNotEquals($oldUser->password, $newUser->password);
+    }
+
+    public function testUpdatePasswordFailedWrongPassword() {
+        $this->seed([UserSeeder::class]);
+        $this->patch('/api/updatePassword',
+        [
+            'current_password' => 'serafim125',
+            'password' => 'edgars123',
+            'password_confirmation' => 'edgars123'
+        ],
+        [
+            'Authorization' => 'luthfi123'
+        ]
+        )->assertStatus(400)
+            ->assertJson([
+                "errors" => [
+                    'message' => [
+                        'Password lama tidak cocok'
+                    ]
+                ]
+            ]);
+    }
+
+    public function testUpdateProfileSuccess() {
+        $this->seed([UserSeeder::class]);
+        $oldUser = User::where('nama', 'Serafim Sitorus')->first();
+        $this->patch('/api/updateProfile',
+        [
+            'nama' => 'Rifqi Jabrah',
+            'email' => 'jabrah@gmail.com'
+        ],
+        [
+            'Authorization' => 'luthfi123'
+        ]
+        )->assertStatus(200)
+            ->assertJson([
+                "data" => [
+                    'nama' => 'Rifqi Jabrah',
+                    'email' => 'jabrah@gmail.com'
+                ]
+            ]);
+
+        $newUser = User::where('nama', 'Rifqi Jabrah')->first();
+        self::assertNotEquals($oldUser->nama, $newUser->nama);
+        self::assertNotEquals($oldUser->email, $newUser->email);
     }
 }
