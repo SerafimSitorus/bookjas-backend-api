@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\BukuController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\ApiAuthMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Spatie\FlareClient\Api;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,8 +26,16 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
 
-Route::middleware(ApiAuthMiddleware::class)->group(function () {
+Route::middleware('api:User,Admin')->group(function () {
     Route::get('/users', [UserController::class, 'get']);
     Route::post('/logout', [UserController::class, 'logout']);
+    Route::get('/books/{isbn}', [BukuController::class, 'get']);
+    Route::get('/books', [BukuController::class, 'search']);
+});
+
+Route::middleware('api:Admin')->group(function () {
+    Route::post('/books', [BukuController::class, 'create']);
+    Route::put('/books/{isbn}', [BukuController::class, 'update']);
+    Route::delete('/books/{isbn}', [BukuController::class, 'delete']);
 });
 

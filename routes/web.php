@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BukuController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('login/{email}/{password}', [BukuController::class, 'login']);
+Route::get('test', [BukuController::class, 'view']);
+Route::get('logout', [BukuController::class, 'logout']);

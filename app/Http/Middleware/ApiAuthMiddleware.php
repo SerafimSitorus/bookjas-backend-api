@@ -15,9 +15,11 @@ class ApiAuthMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, ...$status): Response
     {
+
         $token = $request->header('Authorization');
+        // $token = "2dcbd000-dca0-46a6-8377-253e9f8870ea";
         $authenticate = true;
 
         if (!$token) {
@@ -28,13 +30,13 @@ class ApiAuthMiddleware
 
         if (!$user) {
             $authenticate = false;
-        }else {
+        } else {
             Auth::login($user);
         }
-
-        if ($authenticate) {
+        
+        if ($authenticate && in_array($request->user()->status, $status)) {
             return $next($request);
-        }else{
+        } else {
             return response()->json([
                 "errors" => [
                     "message" => [
@@ -43,7 +45,5 @@ class ApiAuthMiddleware
                 ]
             ])->setStatusCode(401);
         }
-
-
     }
 }

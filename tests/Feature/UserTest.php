@@ -124,7 +124,7 @@ class UserTest extends TestCase
     public function testGetSuccess() {
         $this->seed([UserSeeder::class]);
         $this->get('/api/users', [ 
-            'Authorization' => 'luthfi123'
+            'Authorization' => '123'
         ])->assertStatus(200)
             ->assertJson([
                 "data" => [
@@ -148,8 +148,8 @@ class UserTest extends TestCase
 
     public function testLogoutSuccess() {
         $this->seed([UserSeeder::class]);
-        $this->post('/api/logout', [
-            'Authorization' => 'luthfi123'
+        $this->post('/api/logout', [],[
+            'Authorization' => '123'
         ])->assertStatus(200)
             ->assertJson([
                 "data" => true 
