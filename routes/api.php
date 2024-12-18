@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\ApiAuthMiddleware;
@@ -25,10 +26,21 @@ use Spatie\FlareClient\Api;
 
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
+Route::get('/kategori', [KategoriController::class, 'list']);
 
 Route::middleware('api:User,Admin')->group(function () {
     Route::get('/users', [UserController::class, 'get']);
     Route::post('/logout', [UserController::class, 'logout']);
+    Route::patch('/updatePassword', [UserController::class, 'updatePassword']);
+    Route::patch('/updateProfile', [UserController::class, 'updateProfile']);
+    Route::patch('/updateProfilePicture', [UserController::class, 'updateProfilePicture']);
+    Route::get('/getProfilePicture', [UserController::class, 'getProfilePicture']);
+    
+    Route::get('/kategori{kategori}', [KategoriController::class, 'get']);
+    Route::post('/kategori', [KategoriController::class, 'create']);
+    Route::put('/kategori{kategori}', [KategoriController::class, 'update']);
+    Route::delete('/kategori{kategori}', [KategoriController::class, 'delete']);
+    
     Route::get('/books/{isbn}', [BukuController::class, 'get']);
     Route::get('/books', [BukuController::class, 'search']);
 });

@@ -13,8 +13,10 @@ class KategoriSeeder extends Seeder
      */
     public function run(): void
     {
-        Kategori::create([
-            'kategori' => 'tes'
-        ]);
+        for ($i=0; $i < 20; $i++) { 
+            Kategori::create([
+                'kategori' => 'Horror' . $i
+            ]);
+        }
     }
 }

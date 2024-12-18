@@ -45,5 +45,6 @@ class ApiAuthMiddleware
                 ]
             ])->setStatusCode(401);
         }
+
     }
 }
