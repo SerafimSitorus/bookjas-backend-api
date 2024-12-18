@@ -18,7 +18,14 @@ class UserSeeder extends Seeder
             'nama' => 'Serafim Sitorus',
             'password' => Hash::make('serafim123'),
             'email' => 'edgar@gmail.com',
-            'token' => 'luthfi123'
+            'token' => '123'
+        ]);
+        User::create([
+            'nama' => 'Rifqi',
+            'password' => Hash::make('rifqi123'),
+            'email' => 'rifqi@gmail.com',
+            'status' => 'Admin',
+            'token' => '124'
         ]);
     }
 }

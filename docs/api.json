@@ -1232,6 +1232,9 @@
           "isbn": {
             "type": "string"
           },
+          "sampul": {
+            "type": "string"
+          },
           "judul": {
             "type": "string"
           },
@@ -1262,6 +1265,9 @@
             "type": "object",
             "properties": {
               "isbn": {
+                "type": "string"
+              },
+              "sampul": {
                 "type": "string"
               },
               "judul": {
@@ -1301,6 +1307,9 @@
               "type": "object",
               "properties": {
                 "isbn": {
+                  "type": "string"
+                },
+                "sampul": {
                   "type": "string"
                 },
                 "judul": {
