@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class BukuCreateRequest extends FormRequest
+class PeminjamanPengembalianRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,22 +24,15 @@ class BukuCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "isbn" => ['required', 'string', 'max:13', 'unique:bukus'],
-            "sampul" => ['required'],
-            "judul" => ['required', 'string', 'max:500'],
-            "kategori" => ['required', 'string', 'max:255'],
-            "penulis" => ['required', 'string', 'max:255'],
-            "penerbit" => ['required', 'string', 'max:255'],
-            "deskripsi" => ['required', 'string'],       
-            "tahun_terbit" => ['required', 'string', 'max:24'],
-            "jumlah_tersedia" => ['required', 'integer']
+            'tanggal_pengembalian' => ['required'],
+            'status' => ['required']
         ];
     }
 
-    protected function failedValidation(Validator $validator) {
+    protected function failedValidation(Validator $validator)
+    {
         throw new HttpResponseException(response([
             'errors' => $validator->getMessageBag()
-        ], 400)); 
-        
+        ], 400));
     }
 }
