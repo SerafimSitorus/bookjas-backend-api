@@ -74,20 +74,18 @@ class UserController extends Controller
         ]), 200);
     }
 
-    public function updatePassword(UserUpdatePasswordRequest $request) : UserResource {
+    public function updatePassword(UserUpdatePasswordRequest $request) : JsonResponse {
         $data = $request->validated();
 
         $user = Auth::user();
 
         if (!$user) {
-            return response()->json(['error' => 'User not found'], 404);
+            return response()->json(['errors' => 'User not found'], 404);
         }
 
         if (!Hash::check($data['current_password'], $user->password)) {
             throw new HttpResponseException(response([
-                'errors' => [
-                    'message' => ["Password lama tidak cocok"]
-                ]
+                'errors' => "Password lama tidak cocok"
             ], 400));
         }
 
@@ -96,7 +94,7 @@ class UserController extends Controller
 
         $user->save();
 
-        return new UserResource($user);
+        return response()->json(['message' => 'Password berhasil diubah']);
     }
 
     public function updateProfile(UserUpdateProfileRequest $request) : UserResource {

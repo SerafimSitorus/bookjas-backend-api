@@ -47,13 +47,9 @@ class BukuSeeder extends Seeder
             'jumlah_tersedia' => 10
         ]);
 
-
-
-
-
         Buku::create([
             'isbn' => '1234567891322',
-            'sampul' => 'img/100dongeng.png',
+            'sampul' => 'image/100dongeng.png',
             'judul' => '100 Dongeng Anak Lengkap',
             'kategori' => 'Bebas',
             'penulis' => 'Raihan Abdillah',
@@ -65,7 +61,7 @@ class BukuSeeder extends Seeder
 
         Buku::create([
             'isbn' => '123456321124',
-            'sampul' => 'img/biologi-ketut.png',
+            'sampul' => 'image/biologi-ketut.png',
             'judul' => 'Biologi Kelas XI MA',
             'kategori' => 'Buku Pelajaran',
             'penulis' => 'Ketutu Susilo',
@@ -77,7 +73,7 @@ class BukuSeeder extends Seeder
 
         Buku::create([
             'isbn' => '9793062797',
-            'sampul' => 'img/cara_membangu_umkm.png',
+            'sampul' => 'image/cara_membangu_umkm.png',
             'judul' => 'Cara Membangun UMKM',
             'kategori' => 'Buku Pelajaran',
             'penulis' => 'Alfredo Torres',
@@ -89,7 +85,7 @@ class BukuSeeder extends Seeder
 
         Buku::create([
             'isbn' => '97930312568',
-            'sampul' => 'img/fisika.png',
+            'sampul' => 'image/fisika.png',
             'judul' => 'Fisika Kelas IX MTs',
             'kategori' => 'Buku Pelajaran',
             'penulis' => 'Aiman Fathur',
@@ -101,7 +97,7 @@ class BukuSeeder extends Seeder
 
         Buku::create([
             'isbn' => '6327632538',
-            'sampul' => 'img/funicula.png',
+            'sampul' => 'image/funicula.png',
             'judul' => 'Funiculi Funicula',
             'kategori' => 'Novel',
             'penulis' => 'Toshikazu Kawaguchi',
@@ -113,7 +109,7 @@ class BukuSeeder extends Seeder
 
         Buku::create([
             'isbn' => '793256238',
-            'sampul' => 'img/gadis_kretek.png',
+            'sampul' => 'image/gadis_kretek.png',
             'judul' => 'Gadis Kretek',
             'kategori' => 'Novel',
             'penulis' => 'Ratih Kumala',
@@ -125,7 +121,7 @@ class BukuSeeder extends Seeder
 
         Buku::create([
             'isbn' => '924617123',
-            'sampul' => 'img/hello.png',
+            'sampul' => 'image/hello.png',
             'judul' => 'Hello',
             'kategori' => 'Novel',
             'penulis' => 'Tere Liye',
@@ -137,7 +133,7 @@ class BukuSeeder extends Seeder
 
         Buku::create([
             'isbn' => '5412148124',
-            'sampul' => 'img/laskar_pelangi.png',
+            'sampul' => 'image/laskar_pelangi.png',
             'judul' => 'Laskar Pelangi',
             'kategori' => 'Novel',
             'penulis' => 'Andrea Hirata',
@@ -149,7 +145,7 @@ class BukuSeeder extends Seeder
 
         Buku::create([
             'isbn' => '9786024246945',
-            'sampul' => 'img/laut_bercerita.png',
+            'sampul' => 'image/laut_bercerita.png',
             'judul' => 'Laut Bercerita',
             'kategori' => 'Novel',
             'penulis' => 'Leila Salikha Chudori',
@@ -161,7 +157,7 @@ class BukuSeeder extends Seeder
 
         Buku::create([
             'isbn' => '10002223456',
-            'sampul' => 'img/matematika-cahaya_dewi.png',
+            'sampul' => 'image/matematika-cahaya_dewi.png',
             'judul' => 'Matematika Kelas IX MA',
             'kategori' => 'Buku Pelajaran',
             'penulis' => 'Cahaya Dewi',
@@ -173,7 +169,7 @@ class BukuSeeder extends Seeder
 
         Buku::create([
             'isbn' => '200000223456',
-            'sampul' => 'img/matematika-dewi.png',
+            'sampul' => 'image/matematika-dewi.png',
             'judul' => 'Matematika Kelas VII MTs',
             'kategori' => 'Buku Pelajaran',
             'penulis' => 'Cahaya Dewi',
@@ -185,7 +181,7 @@ class BukuSeeder extends Seeder
 
         Buku::create([
             'isbn' => '30002223456',
-            'sampul' => 'img/matematika-rimbero.png',
+            'sampul' => 'image/matematika-rimbero.png',
             'judul' => 'Matematika Kelas V SD',
             'kategori' => 'Buku Pelajaran',
             'penulis' => 'Cahaya Dewi',
@@ -197,7 +193,7 @@ class BukuSeeder extends Seeder
         
         Buku::create([
             'isbn' => '6121421812',
-            'sampul' => 'img/menjadi_pengusaha_muda.png',
+            'sampul' => 'image/menjadi_pengusaha_muda.png',
             'judul' => 'Menjadi Pengusaha Muda',
             'kategori' => 'Motivasi',
             'penulis' => 'Tim',
@@ -209,7 +205,7 @@ class BukuSeeder extends Seeder
 
         Buku::create([
             'isbn' => '78149122',
-            'sampul' => 'img/pancasila.png',
+            'sampul' => 'image/pancasila.png',
             'judul' => 'Pendidikan Pancasila',
             'kategori' => 'Buku Pelajaran',
             'penulis' => 'Kemendikbud',
@@ -221,7 +217,7 @@ class BukuSeeder extends Seeder
 
         Buku::create([
             'isbn' => '781246912',
-            'sampul' => 'img/pjok-ketut_susilo.png',
+            'sampul' => 'image/pjok-ketut_susilo.png',
             'judul' => 'Pendidikan Jasmani Olahraga Kesehatan',
             'kategori' => 'Buku Pelajaran',
             'penulis' => 'Ketut Susilo',
@@ -233,7 +229,7 @@ class BukuSeeder extends Seeder
 
         Buku::create([
             'isbn' => '781246917',
-            'sampul' => 'img/pjok-ketut-mts.png',
+            'sampul' => 'image/pjok-ketut-mts.png',
             'judul' => 'Pendidikan Jasmani Olahraga Kesehatan',
             'kategori' => 'Buku Pelajaran',
             'penulis' => 'Ketut Susilo',
@@ -245,7 +241,7 @@ class BukuSeeder extends Seeder
 
         Buku::create([
             'isbn' => '69143012',
-            'sampul' => 'img/pulang_pergi.png',
+            'sampul' => 'image/pulang_pergi.png',
             'judul' => 'Pulang Pergi',
             'kategori' => 'Novel',
             'penulis' => 'Tere Liye',
@@ -257,7 +253,7 @@ class BukuSeeder extends Seeder
 
         Buku::create([
             'isbn' => '798134712',
-            'sampul' => 'img/SBK-Fauget.png',
+            'sampul' => 'image/SBK-Fauget.png',
             'judul' => 'Seni Budaya dan Keterampilan',
             'kategori' => 'Buku Pelajaran',
             'penulis' => 'Septiawan',
@@ -269,7 +265,7 @@ class BukuSeeder extends Seeder
 
         Buku::create([
             'isbn' => '68123322',
-            'sampul' => 'img/Seni_tari-cahaya_dewi.png',
+            'sampul' => 'image/Seni_tari-cahaya_dewi.png',
             'judul' => 'Pendidikan Seni Tari Tradisional',
             'kategori' => 'Buku Pelajaran',
             'penulis' => 'Cahaya Dewi',

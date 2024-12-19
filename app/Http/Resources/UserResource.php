@@ -21,7 +21,7 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'foto_profil' => $this->foto_profil,
             'token' => $this->whenNotNull($this->token),
-            'status' => 'User'
+            'status' => $this->status
         ]; 
     }
 }
