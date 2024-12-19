@@ -32,7 +32,7 @@ Route::get('/kategori', [KategoriController::class, 'list']);
 Route::middleware('api:User,Admin')->group(function () {
     Route::get('/users', [UserController::class, 'get']);
     Route::post('/logout', [UserController::class, 'logout']);
-    Route::patch('/updatePassword', [UserController::class, 'updatePassword']);
+    Route::patch('/update-password', [UserController::class, 'updatePassword']);
     Route::patch('/updateProfile', [UserController::class, 'updateProfile']);
     Route::patch('/updateProfilePicture', [UserController::class, 'updateProfilePicture']);
     Route::get('/getProfilePicture', [UserController::class, 'getProfilePicture']);
