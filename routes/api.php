@@ -50,6 +50,8 @@ Route::middleware('api:User,Admin')->group(function () {
     Route::put('/peminjaman/user/{user_id}/isbn/{isbn}', [PeminjamanController::class, 'kembalikan']);
     Route::get('/peminjaman/user/{user_id}', [PeminjamanController::class, 'getByUser']);
     Route::get('/peminjaman', [PeminjamanController::class, 'search']);
+    Route::get('/peminjaman/pinjamuser', [PeminjamanController::class, 'searchUser']);
+    Route::get('/peminjaman/pinjambuku', [PeminjamanController::class, 'searchBuku']);
 });
 
 Route::middleware('api:Admin')->group(function () {

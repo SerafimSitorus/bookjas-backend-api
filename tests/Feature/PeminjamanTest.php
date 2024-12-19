@@ -97,7 +97,29 @@ class PeminjamanTest extends TestCase
         $this->seed([SearchSeeder::class]);
 
         $response = $this->get('/api/peminjaman?search=judul1', [
-            'Authorization' => '123'
+            'Authorization' => '124'
+        ])->assertStatus(200)
+            ->json();
+
+        Log::info(json_encode($response, JSON_PRETTY_PRINT));
+    }
+
+    public function testSearchUser(){
+        $this->seed([SearchSeeder::class]);
+
+        $response = $this->get('/api/peminjaman/pinjamuser?search=rus', [
+            'Authorization' => '124'
+        ])->assertStatus(200)
+            ->json();
+
+        Log::info(json_encode($response, JSON_PRETTY_PRINT));
+    }
+
+    public function testSearchBuku(){
+        $this->seed([SearchSeeder::class]);
+
+        $response = $this->get('/api/peminjaman/pinjambuku?search=ul1', [
+            'Authorization' => '124'
         ])->assertStatus(200)
             ->json();
 

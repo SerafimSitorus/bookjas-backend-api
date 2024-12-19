@@ -93,6 +93,16 @@ class BukuController extends Controller
         }
         $bukus = $bukus->get();
 
+        if ($bukus->isEmpty()) {
+            throw new HttpResponseException(response()->json([
+                'errors' => [
+                    'message' => [
+                        'not found'
+                    ]
+                ]
+            ])->setStatusCode(404));
+        }
+
         return new BukuCollection($bukus);
     }
 
