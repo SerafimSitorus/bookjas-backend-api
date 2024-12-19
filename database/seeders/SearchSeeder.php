@@ -58,6 +58,13 @@ class SearchSeeder extends Seeder
                 'email' => 'edgar'. $i .'@gmail.com',
                 'token' => '123'
             ]);
+            User::create([
+                'id' => '9dc0b676-c615-414d-a303-15ea13a48b6' . $i,
+                'nama' => 'Rifqi Jabrah' . $i,
+                'password' => Hash::make('rifqi123'),
+                'email' => 'rifqi'. $i .'@gmail.com',
+                'token' => '124'
+            ]);
         }
 
         for ($i = 1; $i <= 4; $i++) {
