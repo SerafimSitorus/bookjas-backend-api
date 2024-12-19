@@ -22,9 +22,11 @@ return new class extends Migration
                 b.judul,
                 b.penulis,
                 c.nama as peminjam,
-                a.tanggal_peminjaman
+                a.tanggal_peminjaman,
+                a.tanggal_pengembalian,
+                a.status
             FROM peminjaman a
-            INNER JOIN bukus b ON a.buku_id = b.isbn
+            INNER JOIN bukus b ON a.isbn = b.isbn
             INNER JOIN users c ON a.user_id = c.id;
         ');
     }

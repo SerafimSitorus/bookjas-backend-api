@@ -18,5 +18,8 @@ class KategoriSeeder extends Seeder
                 'kategori' => 'Horror' . $i
             ]);
         }
+        Kategori::create([
+            'kategori' => 'tes'
+        ]);
     }
 }
