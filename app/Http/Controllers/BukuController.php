@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use App\Http\Resources\BukuCollection;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\BukuCreateRequest;
 use App\Http\Requests\BukuUpdateRequest;
 use Illuminate\Database\Eloquent\Builder;
@@ -44,8 +45,9 @@ class BukuController extends Controller
         return $buku;
     }
 
-    public function create(BukuCreateRequest $request): JsonResponse
+    public function create(BukuCreateRequest $request)
     {
+        // return $request->file('sampul');
         $data = $request->validated();
         $user = Auth::user();
         if ($user->status != 'Admin') {
@@ -55,9 +57,17 @@ class BukuController extends Controller
                 ]
             ], 401));
         }
+
+        $sampulDatabase = Str::random(20);
+        $sampulStorage = $sampulDatabase . '.jpg';
+        $sampulDatabase = 'image/' . $sampulDatabase . '.jpg';
+        $data['sampul'] = $sampulDatabase;
+        $request->file('sampul')->move(storage_path('app\\public\\image'), $sampulStorage);
+
         $buku = new Buku($data);
         $buku->save();
 
+        // dd($sampulStorage, $sampulDatabase, $buku);
         return (new BukuResource($buku))->response()->setStatusCode(201);
     }
 
@@ -73,11 +83,11 @@ class BukuController extends Controller
     {
         $search = $request->input('search');
         $bukus = Buku::query();
-        if($search){
+        if ($search) {
             $bukus = $bukus->where(function (Builder $builder) use ($search) {
                 $builder->orWhere('judul', 'like', '%' . $search . '%')
-                ->orWhere('penulis', 'like', '%' . $search . '%')
-                ->orWhere('isbn', 'like', '%' . $search . '%');
+                    ->orWhere('penulis', 'like', '%' . $search . '%')
+                    ->orWhere('isbn', 'like', '%' . $search . '%');
             });
         }
         $bukus = $bukus->get();
@@ -85,12 +95,21 @@ class BukuController extends Controller
         return new BukuCollection($bukus);
     }
 
-    public function update(string $isbn, BukuUpdateRequest $request): BukuResource
+    public function update(string $isbn, BukuUpdateRequest $request)
     {
         $data = $request->validated();
         $user = Auth::user();
         $buku = $this->getBuku($user, $isbn, 'update');
-        $data = $request->validated();
+
+        if ($request->hasFile('sampul')) 
+        {
+            $sampulDatabase = Str::random(20);
+            $sampulStorage = $sampulDatabase . '.jpg';
+            $sampulDatabase = 'image/' . $sampulDatabase . '.jpg';
+            $data['sampul'] = $sampulDatabase;
+            Storage::delete('public/' . $buku->sampul);
+            $request->file('sampul')->move(storage_path('app\\public\\image'), $sampulStorage);
+        }
 
         $buku->fill($data);
         $buku->save();
@@ -102,6 +121,7 @@ class BukuController extends Controller
     {
         $user = Auth::user();
         $buku = $this->getBuku($user, $isbn, 'delete');
+        Storage::delete('public/' . $buku->sampul);
         $buku->delete();
 
         return response()->json([
@@ -115,9 +135,6 @@ class BukuController extends Controller
 
         return (BukuResource::collection($bukus))->response()->setStatusCode(200);
     }
-
-
-
 
 
     public function login($email, $password)

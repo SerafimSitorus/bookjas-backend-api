@@ -149,7 +149,7 @@ class UserTest extends TestCase
     public function testLogoutSuccess() {
         $this->seed([UserSeeder::class]);
         $this->post(uri : '/api/logout', headers:[
-            'Authorization' => 'luthfi123'
+            'Authorization' => '123'
         ])->assertStatus(200)
             ->assertJson([
                 "data" => true 
@@ -180,7 +180,7 @@ class UserTest extends TestCase
             'password_confirmation' => 'edgars123'
         ],
         [
-            'Authorization' => 'luthfi123'
+            'Authorization' => '123'
         ]
         )->assertStatus(200)
             ->assertJson([
@@ -200,7 +200,7 @@ class UserTest extends TestCase
             'password_confirmation' => 'edgars123'
         ],
         [
-            'Authorization' => 'luthfi123'
+            'Authorization' => '123'
         ]
         )->assertStatus(400)
             ->assertJson([
@@ -221,7 +221,7 @@ class UserTest extends TestCase
             'email' => 'jabrah@gmail.com'
         ],
         [
-            'Authorization' => 'luthfi123'
+            'Authorization' => '123'
         ]
         )->assertStatus(200)
             ->assertJson([

@@ -35,7 +35,7 @@ class KategoriTest extends TestCase
         $kategoris = Kategori::query()->limit(1)->first();
         $this->get('/api/kategori' . $kategoris->kategori, 
         [
-            'Authorization' => 'luthfi123'
+            'Authorization' => '123'
         ])
             ->assertStatus(200)
             ->assertJson([
@@ -52,7 +52,7 @@ class KategoriTest extends TestCase
             'kategori' => 'Petualangan'
         ],
         [
-            'Authorization' => 'luthfi123'
+            'Authorization' => '124'
         ])
             ->assertStatus(201)
             ->assertJson([
@@ -70,7 +70,7 @@ class KategoriTest extends TestCase
             'kategori' => 'Petualangan'
         ],
         [
-            'Authorization' => 'luthfi123'
+            'Authorization' => '124'
         ])
             ->assertStatus(200)
             ->assertJson([
@@ -92,7 +92,7 @@ class KategoriTest extends TestCase
             'kategori' => 'Petualangan'
         ],
         [
-            'Authorization' => 'luthfi123'
+            'Authorization' => '124'
         ])
             ->assertStatus(200)
             ->assertJson([

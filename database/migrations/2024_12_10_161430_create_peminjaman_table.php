@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('peminjaman', function (Blueprint $table) {
             $table->uuid('user_id');
             $table->foreign('user_id')->on('users')->references('id');
-            $table->char('buku_id', 13);
-            $table->foreign('buku_id')->on('bukus')->references('isbn');
-            $table->timestamp('tanggal_peminjaman');
-            $table->timestamp('tanggal_pengembalian')->nullable();
+            $table->char('isbn', 13);
+            $table->foreign('isbn')->on('bukus')->references('isbn');
+            $table->date('tanggal_peminjaman');
+            $table->date('tanggal_pengembalian')->nullable();
             $table->enum('status', ['dipinjam', 'dikembalikan'])->default('dipinjam');
         });
     }

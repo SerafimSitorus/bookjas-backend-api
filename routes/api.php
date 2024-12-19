@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\BukuController;
+use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\ApiAuthMiddleware;
 use Illuminate\Http\Request;
@@ -43,6 +44,12 @@ Route::middleware('api:User,Admin')->group(function () {
     
     Route::get('/books/{isbn}', [BukuController::class, 'get']);
     Route::get('/books', [BukuController::class, 'search']);
+    Route::get('/books/kategori/{kategori}', [BukuController::class, 'getListByKategori']);
+
+    Route::post('/peminjaman', [PeminjamanController::class, 'create']);
+    Route::put('/peminjaman/user/{user_id}/isbn/{isbn}', [PeminjamanController::class, 'kembalikan']);
+    Route::get('/peminjaman/user/{user_id}', [PeminjamanController::class, 'getByUser']);
+    Route::get('/peminjaman', [PeminjamanController::class, 'search']);
 });
 
 Route::middleware('api:Admin')->group(function () {

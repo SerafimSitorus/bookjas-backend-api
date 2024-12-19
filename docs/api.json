@@ -933,52 +933,6 @@
       }
     },
     "/peminjaman/user/{idUser}/buku/{isbn}": {
-      "delete": {
-        "tags": [
-          "Peminjaman"
-        ],
-        "summary": "Delete Peminjaman",
-        "description": "Delete Peminjaman",
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "token for user authentication"
-          },
-          {
-            "name": "idUser",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "isbn",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success delete peminjaman",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/response_delete"
-                }
-              }
-            }
-          }
-        }
-      },
       "put": {
         "tags": [
           "Peminjaman"
@@ -1028,7 +982,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/response_peminjaman"
+                  "$ref": "#/components/schemas/response_pengembalian"
                 }
               }
             }
@@ -1362,20 +1316,63 @@
             "type": "object",
             "properties": {
               "user_id": {
-                "type": "string"
-              },
-              "buku_id": {
-                "type": "string"
-              },
-              "tanggal_peminjaman": {
-                "type": "string"
-              },
-              "tanggal_pengembalian": {
-                "type": "string"
-              },
-              "status": {
-                "type": "string"
-              }
+                  "type": "string"
+                },
+                "isbn": {
+                  "type": "string"
+                },
+                "sampul": {
+                  "type": "string"
+                },
+                "judul": {
+                  "type": "string"
+                },
+                "penulis": {
+                  "type": "string"
+                },
+                "peminjam": {
+                  "type": "string"
+                },
+                "tanggal_peminjaman": {
+                  "type": "string"
+                }
+            }
+          },
+          "errors": {
+            "type": "object"
+          }
+        }
+      },
+      "response_pengembalian": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "user_id": {
+                  "type": "string"
+                },
+                "isbn": {
+                  "type": "string"
+                },
+                "sampul": {
+                  "type": "string"
+                },
+                "judul": {
+                  "type": "string"
+                },
+                "penulis": {
+                  "type": "string"
+                },
+                "peminjam": {
+                  "type": "string"
+                },
+                "tanggal_peminjaman": {
+                  "type": "string"
+                },
+                "tanggal_pengembalian": {
+                  "type": "string"
+                }
             }
           },
           "errors": {

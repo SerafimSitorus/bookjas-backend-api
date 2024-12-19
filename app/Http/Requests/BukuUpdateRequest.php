@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class BukuUpdateRequest extends FormRequest
+class   BukuUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,14 +24,14 @@ class BukuUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "sampul" => ['required', 'string', 'max:255'],
-            "judul" => ['required', 'string', 'max:500'],
-            "kategori" => ['required', 'string', 'max:255'],
-            "penulis" => ['required', 'string', 'max:255'],
-            "penerbit" => ['required', 'string', 'max:255'],
-            "deskripsi" => ['required', 'string'],       
-            "tahun_terbit" => ['required', 'string', 'max:24'],
-            "jumlah_tersedia" => ['required', 'integer']
+            "sampul" => ['image', 'max:255'],
+            "judul" => ['string', 'max:500'],
+            "kategori" => ['string', 'max:255'],
+            "penulis" => ['string', 'max:255'],
+            "penerbit" => ['string', 'max:255'],
+            "deskripsi" => ['string'],       
+            "tahun_terbit" => ['string', 'max:4'],
+            "jumlah_tersedia" => ['integer']
         ];
     }
 
