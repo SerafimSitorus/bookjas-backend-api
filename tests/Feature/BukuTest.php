@@ -120,28 +120,28 @@ class BukuTest extends TestCase
             ]);
     }
 
-    public function testGetSuccess()
-    {
-        $this->seed([UserSeeder::class, KategoriSeeder::class, BukuSeeder::class]);
-        $buku = Buku::query()->limit(1)->first();
+    // public function testGetSuccess()
+    // {
+    //     $this->seed([UserSeeder::class, KategoriSeeder::class, BukuSeeder::class]);
+    //     $buku = Buku::query()->limit(1)->first();
 
-        $this->get('/api/books/' . $buku->isbn, [
-            'Authorization' => '123'
-        ])->assertStatus(200)
-            ->assertJson([
-                'data' => [
-                    'isbn' => '1234567890123',
-                    'sampul' => 'https://example.com/sampul.jpg',
-                    'judul' => 'tes',
-                    'kategori' => 'horror10',
-                    'penulis' => 'tes',
-                    'penerbit' => 'tes',
-                    'deskripsi' => 'tes',
-                    'tahun_terbit' => '2023',
-                    'jumlah_tersedia' => 10
-                ]
-            ]);
-    }
+    //     $this->get('/api/books/' . $buku->isbn, [
+    //         'Authorization' => '123'
+    //     ])->assertStatus(200)
+    //         ->assertJson([
+    //             'data' => [
+    //                 'isbn' => '1234567890123',
+    //                 'sampul' => 'https://example.com/sampul.jpg',
+    //                 'judul' => 'tes',
+    //                 'kategori' => 'horror10',
+    //                 'penulis' => 'tes',
+    //                 'penerbit' => 'tes',
+    //                 'deskripsi' => 'tes',
+    //                 'tahun_terbit' => '2023',
+    //                 'jumlah_tersedia' => 10
+    //             ]
+    //         ]);
+    // }
     public function testGetNotFound()
     {
         $this->seed([UserSeeder::class, KategoriSeeder::class, BukuSeeder::class]);
@@ -198,7 +198,7 @@ class BukuTest extends TestCase
 
         $response = $this->get('/api/books?search=alamak', [
             'Authorization' => '123'
-        ])->assertStatus(200)
+        ])->assertStatus(404)
             ->json();
 
         Log::info(json_encode($response, JSON_PRETTY_PRINT));

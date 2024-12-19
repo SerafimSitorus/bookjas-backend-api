@@ -21,5 +21,21 @@ class KategoriSeeder extends Seeder
         Kategori::create([
             'kategori' => 'tes'
         ]);
+
+        Kategori::create([
+            'kategori' => 'Buku Pelajaran'
+        ]);
+
+        Kategori::create([
+            'kategori' => 'Novel'
+        ]);
+
+        Kategori::create([
+            'kategori' => 'Motivasi'
+        ]);
+
+        Kategori::create([
+            'kategori' => 'Bebas'
+        ]);
     }
 }

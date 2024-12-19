@@ -26,7 +26,22 @@ class PeminjamanController extends Controller
     public function create(PeminjamanCreateRequest $request): JsonResponse
     {
         $data = $request->validated();
+        $buku = Buku::where('isbn', $data['isbn'])->first();
+
         $peminjaman = new Peminjaman($data);
+
+        if ($buku->jumlah_tersedia == 0) {
+            throw new HttpResponseException(response()->json([
+                'errors' => [
+                    'message' => [
+                        'Buku Tidak Tersedia'
+                    ]
+                ]
+            ])->setStatusCode(404));
+        }
+        $buku->jumlah_tersedia = $buku->jumlah_tersedia - 1;
+
+        $buku->save();
         $peminjaman->save();
         // dd($data);
 
@@ -63,7 +78,7 @@ class PeminjamanController extends Controller
             $user = User::query();
             $user = $user->where(function (Builder $builder) use ($pengguna) {
                 $builder->orWhere('nama', 'like', '%' . $pengguna . '%')
-                ->orWhere('email', 'like', '%' . $pengguna . '%');
+                    ->orWhere('email', 'like', '%' . $pengguna . '%');
             });
         }
         $user = $user->get();
@@ -121,7 +136,9 @@ class PeminjamanController extends Controller
                 ]
             ], 401));
         }
-
+        $buku = Buku::where('isbn', $isbn)->first();
+        $buku->jumlah_tersedia = $buku->jumlah_tersedia + 1;
+        $buku->save();
         $peminjaman = Peminjaman::where('user_id', $user_id)->where('isbn', $isbn)->first();
         // dd($peminjaman, $user_id, $isbn);
         $peminjaman->update([
@@ -131,7 +148,4 @@ class PeminjamanController extends Controller
 
         return new PeminjamanResource($peminjaman);
     }
-
-
-
 }
