@@ -24,7 +24,7 @@ class BukuUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "sampul" => ['required', 'string', 'max:255'],
+            "sampul" => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
             "judul" => ['required', 'string', 'max:500'],
             "kategori" => ['required', 'string', 'max:255'],
             "penulis" => ['required', 'string', 'max:255'],
