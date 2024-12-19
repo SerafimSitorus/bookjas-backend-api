@@ -15,7 +15,6 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('nama');
             $table->string('email')->unique();
-            $table->string('foto_profil')->nullable();
             $table->string('password');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('token')->nullable();

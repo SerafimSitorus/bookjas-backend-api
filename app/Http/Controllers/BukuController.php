@@ -42,6 +42,7 @@ class BukuController extends Controller
                 ]
             )->setStatusCode(404));
         }
+        
         return $buku;
     }
 

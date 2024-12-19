@@ -24,14 +24,16 @@ class   BukuUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "sampul" => ['image', 'max:255'],
-            "judul" => ['string', 'max:500'],
-            "kategori" => ['string', 'max:255'],
-            "penulis" => ['string', 'max:255'],
-            "penerbit" => ['string', 'max:255'],
-            "deskripsi" => ['string'],       
-            "tahun_terbit" => ['string', 'max:4'],
-            "jumlah_tersedia" => ['integer']
+
+            "sampul" => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            "judul" => ['required', 'string', 'max:500'],
+            "kategori" => ['required', 'string', 'max:255'],
+            "penulis" => ['required', 'string', 'max:255'],
+            "penerbit" => ['required', 'string', 'max:255'],
+            "deskripsi" => ['required', 'string'],       
+            "tahun_terbit" => ['required', 'string', 'max:24'],
+            "jumlah_tersedia" => ['required', 'integer']
+
         ];
     }
 
