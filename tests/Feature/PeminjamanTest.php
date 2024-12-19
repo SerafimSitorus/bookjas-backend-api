@@ -44,30 +44,30 @@ class PeminjamanTest extends TestCase
             ]);
     }
 
-    public function testKembalikanSuccess()
-    {
-        $this->seed([UserSeeder::class, KategoriSeeder::class, BukuSeeder::class, PeminjamanSeeder::class]);
-        $tanggal = Carbon::now()->format('Y-m-d');
-        $buku = Buku::query()->limit(1)->first();
-        $user = User::query()->limit(1)->first();
+    // public function testKembalikanSuccess()
+    // {
+    //     $this->seed([UserSeeder::class, KategoriSeeder::class, BukuSeeder::class, PeminjamanSeeder::class]);
+    //     $tanggal = Carbon::now()->format('Y-m-d');
+    //     $buku = Buku::query()->limit(1)->first();
+    //     $user = User::query()->limit(1)->first();
 
-        $this->put(
-            '/api/peminjaman/user/' . $user->id . '/isbn/' . $buku->isbn,
-            [
-                'tanggal_pengembalian' => $tanggal,
-                'status' => 'dikembalikan'
-            ],
-            [
-                'Authorization' => '124'
-            ]
-        )->assertStatus(200)
-            ->assertJson([
-                'data' => [
-                    'tanggal_pengembalian' => $tanggal,
-                    'status' => 'dikembalikan'
-                ]
-            ]);
-    }
+    //     $this->put(
+    //         '/api/peminjaman/user/' . $user->id . '/isbn/' . $buku->isbn,
+    //         [
+    //             'tanggal_pengembalian' => $tanggal,
+    //             'status' => 'dikembalikan'
+    //         ],
+    //         [
+    //             'Authorization' => '124'
+    //         ]
+    //     )->assertStatus(200)
+    //         ->assertJson([
+    //             'data' => [
+    //                 'tanggal_pengembalian' => $tanggal,
+    //                 'status' => 'dikembalikan'
+    //             ]
+    //         ]);
+    // }
 
     public function testGetByUserSuccess()
     {

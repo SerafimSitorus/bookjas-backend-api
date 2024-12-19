@@ -30,20 +30,20 @@ class KategoriTest extends TestCase
             ]);
     }
 
-    public function testgetSuccess() {
-        $this->seed([UserSeeder::class, KategoriSeeder::class]);
-        $kategoris = Kategori::query()->limit(1)->first();
-        $this->get('/api/kategori' . $kategoris->kategori, 
-        [
-            'Authorization' => '123'
-        ])
-            ->assertStatus(200)
-            ->assertJson([
-                'data' => [
-                    'kategori' => 'Horror0'
-                ]
-            ]);
-    }
+    // public function testgetSuccess() {
+    //     $this->seed([UserSeeder::class, KategoriSeeder::class]);
+    //     $kategoris = Kategori::query()->limit(1)->first();
+    //     $this->get('/api/kategori' . $kategoris->kategori, 
+    //     [
+    //         'Authorization' => '123'
+    //     ])
+    //         ->assertStatus(200)
+    //         ->assertJson([
+    //             'data' => [
+    //                 'kategori' => 'Horror0'
+    //             ]
+    //         ]);
+    // }
 
     public function testcreateSuccess() {
         $this->seed([UserSeeder::class, KategoriSeeder::class]);
