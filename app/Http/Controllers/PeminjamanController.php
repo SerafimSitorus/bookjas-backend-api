@@ -47,7 +47,7 @@ class PeminjamanController extends Controller
                 ]
             ])->setStatusCode(404));
         }
-        
+        $data['tanggal_peminjaman'] = Carbon::now()->format('Y-m-d');
         $data['user_id'] = $user->id;
         $peminjaman = new Peminjaman($data);
 
@@ -136,22 +136,30 @@ class PeminjamanController extends Controller
                 ]
             ])->setStatusCode(404));
         }
+        foreach ($peminjaman as $p) {
+            $tanggal_pinjam = Carbon::parse($p->tanggal_peminjaman);
+            $tenggat = $tanggal_pinjam->addDays(7);
+            $sisa_waktu = $tenggat->diffInDays(Carbon::now()) + 1;
+            $p['tenggat'] = $tenggat->format('Y-m-d');
+            if($sisa_waktu == 1) {
+                $p['hari_tersisa'] = "Tenggat Hari Ini";
+            }else if($tenggat->isPast() && $p->status == "dipinjam"){
+                $p['hari_tersisa'] = "Lewat Tenggat"; 
+            }else{
+                $p['hari_tersisa'] = $sisa_waktu ." Hari Tersisa" ;
+            }
+        }
         return new ViewPeminjamanCollection($peminjaman);
     }
 
     public function getByUser(string $user_id): JsonResponse {
         $peminjaman = ViewPeminjaman::where('user_id', $user_id)->get();
         // $waktu =  $peminjaman;
-        $i = 1;
         foreach ($peminjaman as $p) {
             $tanggal_pinjam = Carbon::parse($p->tanggal_peminjaman);
             $tenggat = $tanggal_pinjam->addDays(7);
             $sisa_waktu = $tenggat->diffInDays(Carbon::now()) + 1;
             $p['tenggat'] = $tenggat->format('Y-m-d');
-            // if($i == 2){
-            //     return response()->json([$sisa_waktu, $tenggat, Carbon::now(), $tanggal_pinjam, $p->tanggal_peminjaman, $p->isbn]);
-            // }
-            // $i++;
             if($sisa_waktu == 1) {
                 $p['hari_tersisa'] = "Tenggat Hari Ini";
             }else if($tenggat->isPast() && $p->status == "dipinjam"){
