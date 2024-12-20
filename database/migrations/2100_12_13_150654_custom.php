@@ -24,7 +24,8 @@ return new class extends Migration
                 c.nama as peminjam,
                 a.tanggal_peminjaman,
                 a.tanggal_pengembalian,
-                a.status
+                a.status,
+                a.created_at
             FROM peminjaman a
             INNER JOIN bukus b ON a.isbn = b.isbn
             INNER JOIN users c ON a.user_id = c.id;
