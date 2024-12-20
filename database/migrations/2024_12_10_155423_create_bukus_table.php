@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('sampul', 255);
             $table->string('judul', 500);
             $table->string('kategori', 255);
-            $table->foreign('kategori')->on('kategoris')->references('kategori');
+            $table->foreign('kategori')->on('kategoris')->references('kategori')->onUpdate('cascade');
             $table->string('penulis', 255);
             $table->string('penerbit', 255);
             $table->text('deskripsi');

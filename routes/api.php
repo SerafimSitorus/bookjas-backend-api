@@ -24,7 +24,6 @@ use Spatie\FlareClient\Api;
 //     return $request->user();
 // });
 
-
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
 Route::get('/kategori', [KategoriController::class, 'list']);
@@ -33,14 +32,14 @@ Route::middleware('api:User,Admin')->group(function () {
     Route::get('/users', [UserController::class, 'get']);
     Route::post('/logout', [UserController::class, 'logout']);
     Route::patch('/update-password', [UserController::class, 'updatePassword']);
-    Route::patch('/updateProfile', [UserController::class, 'updateProfile']);
+    Route::patch('/update-profile', [UserController::class, 'updateProfile']);
     Route::patch('/updateProfilePicture', [UserController::class, 'updateProfilePicture']);
     Route::get('/getProfilePicture', [UserController::class, 'getProfilePicture']);
     
     Route::get('/kategori{kategori}', [KategoriController::class, 'get']);
     Route::post('/kategori', [KategoriController::class, 'create']);
-    Route::put('/kategori{kategori}', [KategoriController::class, 'update']);
-    Route::delete('/kategori{kategori}', [KategoriController::class, 'delete']);
+    Route::put('/kategori/{kategori}', [KategoriController::class, 'update']);
+    Route::delete('/kategori/{kategori}', [KategoriController::class, 'delete']);
     
     Route::get('/books/{isbn}', [BukuController::class, 'get']);
     Route::get('/books', [BukuController::class, 'search']);
@@ -59,4 +58,3 @@ Route::middleware('api:Admin')->group(function () {
     Route::put('/books/{isbn}', [BukuController::class, 'update']);
     Route::delete('/books/{isbn}', [BukuController::class, 'delete']);
 });
-

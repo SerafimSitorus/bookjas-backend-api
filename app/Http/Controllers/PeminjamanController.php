@@ -118,8 +118,7 @@ class PeminjamanController extends Controller
         return new ViewPeminjamanCollection($peminjaman);
     }
 
-    public function getByUser(string $user_id): JsonResponse
-    {
+    public function getByUser(string $user_id): JsonResponse {
         $peminjaman = ViewPeminjaman::where('user_id', $user_id)->get();
         // $waktu =  $peminjaman;
         foreach ($peminjaman as $p) {
@@ -136,10 +135,9 @@ class PeminjamanController extends Controller
             }
         }
 
-        // dd($peminjaman);
-        // dd(ResourcesViewPeminjaman::collection($peminjaman));
         return (ResourcesViewPeminjaman::collection($peminjaman))->response()->setStatusCode(200);
     }
+
     public function kembalikan(string $user_id, string $isbn, PeminjamanPengembalianRequest $request): PeminjamanResource
     {
         $data = $request->validated();

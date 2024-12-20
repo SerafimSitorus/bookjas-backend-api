@@ -44,8 +44,7 @@ class KategoriController extends Controller
         $kategori = new Kategori($data);
         $kategori->save();
 
-        return (new KategoriResource($kategori))->response()->setStatusCode(201);
-
+        return response()->json(['message' => 'Kategori berhasil ditambahkan']);
     }
 
     public function update(string $kategori, KategoriCreateRequest $request) : JsonResponse {
@@ -65,10 +64,7 @@ class KategoriController extends Controller
         $kategoriData->fill($data);
         $kategoriData->save();
 
-        return response()->json([
-            'message' => 'Kategori Updated Successfully',
-            'data' => new KategoriResource($kategoriData)
-        ], 200);
+        return response()->json(['message' => 'Kategori berhasil diubah'], 200);
     }
 
     public function delete(string $kategori) : JsonResponse {
@@ -83,10 +79,15 @@ class KategoriController extends Controller
         }
 
         $kategoriData = Kategori::where('kategori', $kategori)->first();
-        $kategoriData->delete();
+
+        try {
+            $kategoriData->delete();
+        } catch (\Throwable $th) {
+            return response()->json(['errors' => 'Kategori sedang digunakan di buku lain'], 400);
+        }
 
         return response()->json([
-            'message' => 'Data deleted successfully'
+            'message' => 'Kategori berhasil dihapus'
         ], 200);
     }
 }
