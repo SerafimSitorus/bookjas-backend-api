@@ -47,6 +47,18 @@ class PeminjamanController extends Controller
                 ]
             ])->setStatusCode(404));
         }
+
+        $peminjaman = Peminjaman::where('user_id', $user->id)->where('isbn', $buku->isbn)->first();
+        if ($peminjaman) {
+            throw new HttpResponseException(response()->json([
+                'errors' => [
+                    'message' => [
+                        'Pengguna sudah meminjam buku ini'
+                    ]
+                ]
+            ])->setStatusCode(404));
+        }
+
         $data['tanggal_peminjaman'] = Carbon::now()->format('Y-m-d');
         $data['user_id'] = $user->id;
         $peminjaman = new Peminjaman($data);
@@ -66,7 +78,7 @@ class PeminjamanController extends Controller
         $peminjaman->save();
         // dd($data);
 
-        return (new PeminjamanResource($peminjaman))->response()->setStatusCode(201);
+        return response()->json(['message' => 'Peminjaman berhasil ditambahkan']);
     }
 
     public function searchBuku(Request $request): JsonResponse
