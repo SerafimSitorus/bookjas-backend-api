@@ -97,25 +97,34 @@ class UserController extends Controller
         return response()->json(['message' => 'Password berhasil diubah']);
     }
 
-    public function updateProfile(UserUpdateProfileRequest $request) : UserResource {
+    public function updateProfile(UserUpdateProfileRequest $request) : JsonResponse {
         $data = $request->validated();
         $user = Auth::user();
 
         if (!$user) {
-            return response()->json(['error' => 'User not found'], 404);
+            return response()->json([
+                'errors' => [
+                    'message' => 'User not found'
+                ]],404);
         }
 
-        if (isset($data['nama'])) {
-            $user->nama = $data['nama'];
+        $rules = ['nama' => ['required', 'string', 'max:255'], 'email' => ['required']];
+
+        if($data['email'] != $user->email){
+            $rules['email'] = ['unique:users'];
         }
 
-        if (isset($data['email'])) {
-            $user->email = $data['email']; 
+        try {
+            $data = $request->validate($rules);
+        } catch (\Throwable $th) {
+            return response()->json(['errors' => ['email' => 'Email sudah ada']], 400);
         }
 
+        $user->nama = $data['nama'];
+        $user->email = $data['email'];
         $user->save();
 
-        return new UserResource($user);
+        return response()->json(['message' => 'Profile berhasil diubah']);
     }
 
     public function updateProfilePicture(UserUpdateProfilePictureRequest $request) : JsonResponse {
