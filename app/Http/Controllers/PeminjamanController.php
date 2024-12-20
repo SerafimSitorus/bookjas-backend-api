@@ -126,8 +126,16 @@ class PeminjamanController extends Controller
             $tanggal_pinjam = Carbon::parse($p->tanggal_peminjaman);
             $tenggat = $tanggal_pinjam->addDays(8);
             $sisa_waktu = $tenggat->diffInDays(Carbon::now());
-            $p['hari_tersisa'] = $sisa_waktu ." Hari Tersisa" ;
+            // return response()->json([$sisa_waktu, $tenggat, Carbon::now(), $tanggal_pinjam, $p->tanggal_peminjaman, $p->isbn]);
+            if($tenggat->isPast() && $p->status == "dipinjam") {
+               $p['hari_tersisa'] = "Lewat Tenggat"; 
+            }else if($sisa_waktu == 0){
+                $p['hari_tersisa'] = "Tenggat Hari Ini";
+            }else{
+                $p['hari_tersisa'] = $sisa_waktu ." Hari Tersisa" ;
+            }
         }
+
         // dd($peminjaman);
         // dd(ResourcesViewPeminjaman::collection($peminjaman));
         return (ResourcesViewPeminjaman::collection($peminjaman))->response()->setStatusCode(200);
