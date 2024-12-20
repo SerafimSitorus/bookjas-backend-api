@@ -25,8 +25,7 @@ class PeminjamanCreateRequest extends FormRequest
     {
         return [
             'email' => ['required'],
-            'isbn' => ['required'],
-            'tanggal_peminjaman' => ['required']
+            'isbn' => ['required']
         ];
     }
 
