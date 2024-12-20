@@ -23,7 +23,8 @@ class ViewPeminjaman extends JsonResource
             'peminjam' => $this->peminjam,
             'tanggal_peminjaman' => $this->tanggal_peminjaman,
             'tanggal_pengembalian' => $this->tanggal_pengembalian,
-            'status' => $this->status
+            'status' => $this->status,
+            'hari_tersisa' => $this->hari_tersisa
         ];
     }
 }
