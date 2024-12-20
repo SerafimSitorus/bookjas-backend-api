@@ -121,6 +121,14 @@ class PeminjamanController extends Controller
     public function getByUser(string $user_id): JsonResponse
     {
         $peminjaman = ViewPeminjaman::where('user_id', $user_id)->get();
+        // $waktu =  $peminjaman;
+        foreach ($peminjaman as $p) {
+            $tanggal_pinjam = Carbon::parse($p->tanggal_peminjaman);
+            $tenggat = $tanggal_pinjam->addDays(8);
+            $sisa_waktu = $tenggat->diffInDays(Carbon::now());
+            $p['hari_tersisa'] = $sisa_waktu ." Hari Tersisa" ;
+        }
+        // dd($peminjaman);
         // dd(ResourcesViewPeminjaman::collection($peminjaman));
         return (ResourcesViewPeminjaman::collection($peminjaman))->response()->setStatusCode(200);
     }
