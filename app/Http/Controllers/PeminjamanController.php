@@ -125,6 +125,7 @@ class PeminjamanController extends Controller
             $tanggal_pinjam = Carbon::parse($p->tanggal_peminjaman);
             $tenggat = $tanggal_pinjam->addDays(8);
             $sisa_waktu = $tenggat->diffInDays(Carbon::now());
+            $p['tenggat'] = $tenggat->format('Y-m-d');
             // return response()->json([$sisa_waktu, $tenggat, Carbon::now(), $tanggal_pinjam, $p->tanggal_peminjaman, $p->isbn]);
             if($tenggat->isPast() && $p->status == "dipinjam") {
                $p['hari_tersisa'] = "Lewat Tenggat"; 
