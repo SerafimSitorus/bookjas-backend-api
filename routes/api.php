@@ -57,4 +57,6 @@ Route::middleware('api:Admin')->group(function () {
     Route::post('/books', [BukuController::class, 'create']);
     Route::put('/books/{isbn}', [BukuController::class, 'update']);
     Route::delete('/books/{isbn}', [BukuController::class, 'delete']);
+
+    Route::get('/data-dashboard', [UserController::class, 'hitungJumlah']);
 });

@@ -20,6 +20,7 @@ use App\Http\Resources\SearchBuku;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use App\Http\Resources\ViewPeminjaman as ResourcesViewPeminjaman;
 use App\Models\Buku;
+use Illuminate\Database\Eloquent\Casts\Json;
 
 class PeminjamanController extends Controller
 {
@@ -48,7 +49,7 @@ class PeminjamanController extends Controller
             ])->setStatusCode(404));
         }
 
-        $peminjaman = Peminjaman::where('user_id', $user->id)->where('isbn', $buku->isbn)->first();
+        $peminjaman = Peminjaman::where('user_id', $user->id)->where('isbn', $buku->isbn)->where('status', 'dipinjam')->first();
         if ($peminjaman) {
             throw new HttpResponseException(response()->json([
                 'errors' => [
@@ -138,7 +139,7 @@ class PeminjamanController extends Controller
                     ->orWhere('peminjam', 'like', '%' . $search . '%');
             });
         }
-        $peminjaman = $peminjaman->get();
+        $peminjaman = $peminjaman->orderBy('created_at', 'desc')->get();
         if ($peminjaman->isEmpty()) {
             throw new HttpResponseException(response()->json([
                 'errors' => [
@@ -165,7 +166,7 @@ class PeminjamanController extends Controller
     }
 
     public function getByUser(string $user_id): JsonResponse {
-        $peminjaman = ViewPeminjaman::where('user_id', $user_id)->get();
+        $peminjaman = ViewPeminjaman::where('user_id', $user_id)->orderBy('created_at', 'desc')->get();
         // $waktu =  $peminjaman;
         foreach ($peminjaman as $p) {
             $tanggal_pinjam = Carbon::parse($p->tanggal_peminjaman);
@@ -184,28 +185,22 @@ class PeminjamanController extends Controller
         return (ResourcesViewPeminjaman::collection($peminjaman))->response()->setStatusCode(200);
     }
 
-    public function kembalikan(string $user_id, string $isbn, PeminjamanPengembalianRequest $request): PeminjamanResource
+    public function kembalikan(string $user_id, string $isbn): JsonResponse
     {
-        $data = $request->validated();
-
         $user = Auth::user();
         if ($user->status != 'Admin') {
             throw new HttpResponseException(response([
-                'errors' => [
-                    'message' => ["Unauthorized"]
-                ]
+                'errors' => "Unauthorized"
             ], 401));
         }
         $buku = Buku::where('isbn', $isbn)->first();
         $buku->jumlah_tersedia = $buku->jumlah_tersedia + 1;
         $buku->save();
-        $peminjaman = Peminjaman::where('user_id', $user_id)->where('isbn', $isbn)->first();
-        // dd($peminjaman, $user_id, $isbn);
-        $peminjaman->update([
+        $peminjaman = Peminjaman::where('user_id', $user_id)->where('isbn', $isbn)->update([
             'tanggal_pengembalian' => Carbon::now()->format('Y-m-d'),
             'status' => 'dikembalikan'
         ]);
-
-        return new PeminjamanResource($peminjaman);
+        // return response()->json([$buku, $peminjaman]);
+        return response()->json(['message' => 'Buku berhasi dikembalikan']);
     }
 }

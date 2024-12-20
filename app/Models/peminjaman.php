@@ -21,7 +21,6 @@ class Peminjaman extends Model
         'status'
     ];
 
-    public $timestamps = false;
     protected $primaryKey = null;
     public $incrementing = false;
 

@@ -2,20 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserLoginRequest;
-use App\Http\Requests\UserRegisterRequest;
-use App\Http\Requests\UserUpdatePasswordRequest;
-use App\Http\Requests\UserUpdateProfilePictureRequest;
-use App\Http\Requests\UserUpdateProfileRequest;
-use App\Http\Resources\UserResource;
+use Carbon\Carbon;
+use App\Models\Buku;
 use App\Models\User;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Peminjaman;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\UserLoginRequest;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\UserRegisterRequest;
+use App\Http\Requests\UserUpdateProfileRequest;
+use App\Http\Requests\UserUpdatePasswordRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use App\Http\Requests\UserUpdateProfilePictureRequest;
 
 class UserController extends Controller
 {
@@ -171,6 +174,31 @@ class UserController extends Controller
         return response()->json([
             'foto_profil_url' => $fotoProfileUrl
         ], 200);
+    }
+
+    public function hitungJumlah(): JsonResponse {
+
+        $jumlah_buku =  Buku::count();
+
+        $bulan_ini = Carbon::now()->month;
+        $peminjaman = Peminjaman::all();
+        $jumlah_peminjaman = 0;
+        foreach ($peminjaman as $p) {
+            if (Carbon::parse($p->tanggal_peminjaman)->month == $bulan_ini) {
+                $jumlah_peminjaman++;
+            };
+        }
+
+        $jumlah_pembaca = User::where('status', 'User')->count();
+
+        $jumlah_pustakawan = User::where('status', 'Admin')->count();
+        return response()->json([
+            "jumlah_peminjaman" => $jumlah_peminjaman,
+            "jumlah_pembaca" => $jumlah_pembaca,
+            "jumlah_pustakawan" => $jumlah_pustakawan,
+            "jumlah_buku" => $jumlah_buku
+        ]);
+        
     }
 
 
