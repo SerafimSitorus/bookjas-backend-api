@@ -24,7 +24,7 @@ class PeminjamanCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['required'],
+            'email' => ['required'],
             'isbn' => ['required'],
             'tanggal_peminjaman' => ['required']
         ];

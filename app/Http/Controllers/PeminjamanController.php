@@ -26,8 +26,29 @@ class PeminjamanController extends Controller
     public function create(PeminjamanCreateRequest $request): JsonResponse
     {
         $data = $request->validated();
+        $user = User::where('email', $data['email'])->first();
         $buku = Buku::where('isbn', $data['isbn'])->first();
 
+        if (!$buku) {
+            throw new HttpResponseException(response()->json([
+                'errors' => [
+                    'message' => [
+                        'Buku Tidak Ditemukan'
+                    ]
+                ]
+            ])->setStatusCode(404));
+        }
+        if (!$user) {
+            throw new HttpResponseException(response()->json([
+                'errors' => [
+                    'message' => [
+                        'Pengguna Tidak Ditemukan'
+                    ]
+                ]
+            ])->setStatusCode(404));
+        }
+        
+        $data['user_id'] = $user->id;
         $peminjaman = new Peminjaman($data);
 
         if ($buku->jumlah_tersedia == 0) {
