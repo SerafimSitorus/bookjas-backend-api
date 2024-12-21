@@ -15,6 +15,7 @@ TBA
 API ini dibuat menggunakan alat dan framework berikut:
 - Laravel.
 - MySQL
+
 Additional Libraries:
 - Carbon: A PHP library for date and time manipulation.
 
