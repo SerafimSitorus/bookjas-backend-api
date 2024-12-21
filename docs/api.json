@@ -596,6 +596,133 @@
         }
       }
     },
+    "/update_profile": {
+      "patch": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Update Current User profile",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Bearer token for user authentication"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "current_password": {
+                    "type": "string",
+                    "example": "old_password123"
+                  },
+                  "new_password": {
+                    "type": "string",
+                    "example": "new_secure_password456"
+                  },
+                  "confirm_password": {
+                    "type": "string",
+                    "example": "new_secure_password456"
+                  }
+                },
+                "required": [
+                  "current_password",
+                  "new_password",
+                  "confirm_password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "current_password": {
+                          "type": "string",
+                          "example": "old_password123"
+                        },
+                        "new_password": {
+                          "type": "string",
+                          "example": "new_secure_password456"
+                        },
+                        "confirm_password": {
+                          "type": "string",
+                          "example": "new_secure_password456"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation Password Error",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "validationerror": {
+                    "description": "Validation Password error",
+                    "value": {
+                      "errors": {
+                        "current_password": [
+                          "current password must not be blank",
+                          "current password min 8 characters",
+                          "current password max 255 characters",
+                          "current password does not match the existing password"
+                        ],
+                        "new_password": [
+                          "new password must not be blank",
+                          "new password min 8 characters",
+                          "new password max 255 characters"
+                        ],
+                        "password_confirmation": [
+                          "password confirmation must not be blank",
+                          "password confirmation min 8 characters",
+                          "password confirmation max 255 characters",
+                          "password confirmation does not match the new password"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "string",
+                      "example": "Invalid or missing token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/books": {
       "post": {
         "tags": [
@@ -799,6 +926,46 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/response_delete"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/books/kategori/{kategori}": {
+      "get": {
+        "tags": [
+          "Book"
+        ],
+        "summary": "Get book by kategori",
+        "description": "Get book by kategori",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "token for user authentication"
+          },
+          {
+            "name": "isbn",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get detail book",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response_buku"
                 }
               }
             }
