@@ -10,7 +10,6 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Resources\BukuResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Http;
 use App\Http\Resources\BukuCollection;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\BukuCreateRequest;
@@ -18,8 +17,7 @@ use App\Http\Requests\BukuUpdateRequest;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class BukuController extends Controller
-{
+class BukuController extends Controller {
     private function getBuku(User $user, string $isbn, $process): Buku
     {
         $buku = Buku::where('isbn', $isbn)->first();
@@ -80,8 +78,7 @@ class BukuController extends Controller
         return new BukuResource($buku);
     }
 
-    public function search(Request $request): BukuCollection
-    {
+    public function search(Request $request): BukuCollection {
         $search = $request->input('search');
         $bukus = Buku::query();
         if ($search) {
@@ -91,7 +88,7 @@ class BukuController extends Controller
                     ->orWhere('isbn', 'like', '%' . $search . '%');
             });
         }
-        $bukus = $bukus->get();
+        $bukus = $bukus->orderBy('judul')->get();
 
         if ($bukus->isEmpty()) {
             throw new HttpResponseException(response()->json([
@@ -104,6 +101,12 @@ class BukuController extends Controller
         }
 
         return new BukuCollection($bukus);
+    }
+
+    public function getNewestBook() : JsonResponse {
+        $newestBooks = Buku::latest()->limit(7)->get();
+
+        return response()->json(['data' => $newestBooks]);
     }
 
     public function update(string $isbn, BukuUpdateRequest $request)
@@ -148,8 +151,7 @@ class BukuController extends Controller
     }
 
 
-    public function login($email, $password)
-    {
+    public function login($email, $password) {
         $user = User::where('email', $email)->first();
         if ($user && Hash::check($password, $user->password)) {
             $user->token = Str::uuid()->toString();
@@ -164,15 +166,15 @@ class BukuController extends Controller
             'message' => 'login failed'
         ], 401);
     }
-    public function logout()
-    {
+
+    public function logout() {
         Auth::logout();
     }
-    public function view()
-    {
+
+    public function view() {
         $token = "2dcbd000-dca0-46a6-8377-253e9f8870ea";
         // Mengirimkan request dengan Header Authorization
-        //Tampilkan response dari request
+        // Tampilkan response dari request
         // dump($response->json());
         dump(Auth::user());
     }

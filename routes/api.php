@@ -4,10 +4,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\UserController;
-use App\Http\Middleware\ApiAuthMiddleware;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Spatie\FlareClient\Api;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,9 +17,9 @@ use Spatie\FlareClient\Api;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+/* Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+}); */
 
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
@@ -43,6 +40,7 @@ Route::middleware('api:User,Admin')->group(function () {
     
     Route::get('/books/{isbn}', [BukuController::class, 'get']);
     Route::get('/books', [BukuController::class, 'search']);
+    Route::get('/books-newest', [BukuController::class, 'getNewestBook']);
     Route::get('/books/kategori/{kategori}', [BukuController::class, 'getListByKategori']);
 
     Route::post('/peminjaman', [PeminjamanController::class, 'create']);

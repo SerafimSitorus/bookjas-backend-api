@@ -7,25 +7,23 @@ use App\Http\Resources\KategoriResource;
 use App\Models\Kategori;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class KategoriController extends Controller
-{
-    public function list() : JsonResponse{
-        $data = Kategori::all();
+class KategoriController extends Controller {
+    public function list() : JsonResponse {
+        $data = Kategori::latest()->get();
 
         return (KategoriResource::collection($data))->response()->setStatusCode(200);
     }
 
-    public function get(string $kategori) : JsonResponse{
+    public function get(string $kategori) : JsonResponse {
         $data = Kategori::where('kategori', $kategori)->first();
 
         return response()->json([
             'data' => [
                 'kategori' => $data['kategori']
             ]
-        ], 200);;
+        ], 200);
     }
 
     public function create(KategoriCreateRequest $request) : JsonResponse {
