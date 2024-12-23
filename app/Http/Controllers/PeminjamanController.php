@@ -129,17 +129,19 @@ class PeminjamanController extends Controller
         return (SearchUser::collection($user))->response()->setStatusCode(200);
     }
 
-    public function search(Request $request): ViewPeminjamanCollection
-    {
+    public function search(Request $request): ViewPeminjamanCollection {
         $search = $request->input('search');
         $peminjaman = ViewPeminjaman::query();
+        
         if ($search) {
             $peminjaman = $peminjaman->where(function (Builder $builder) use ($search) {
                 $builder->orWhere('judul', 'like', '%' . $search . '%')
                     ->orWhere('peminjam', 'like', '%' . $search . '%');
             });
         }
-        $peminjaman = $peminjaman->orderBy('created_at', 'desc')->get();
+
+        $peminjaman = $peminjaman->orderBy('updated_at', 'DESC')->get();
+
         if ($peminjaman->isEmpty()) {
             throw new HttpResponseException(response()->json([
                 'errors' => [
@@ -149,6 +151,7 @@ class PeminjamanController extends Controller
                 ]
             ])->setStatusCode(404));
         }
+
         foreach ($peminjaman as $p) {
             $tanggal_pinjam = Carbon::parse($p->tanggal_peminjaman);
             $tenggat = $tanggal_pinjam->addDays(7);
@@ -162,6 +165,7 @@ class PeminjamanController extends Controller
                 $p['hari_tersisa'] = $sisa_waktu ." Hari Tersisa" ;
             }
         }
+
         return new ViewPeminjamanCollection($peminjaman);
     }
 
@@ -185,8 +189,7 @@ class PeminjamanController extends Controller
         return (ResourcesViewPeminjaman::collection($peminjaman))->response()->setStatusCode(200);
     }
 
-    public function kembalikan(string $user_id, string $isbn): JsonResponse
-    {
+    public function kembalikan(string $user_id, string $isbn): JsonResponse {
         $user = Auth::user();
         if ($user->status != 'Admin') {
             throw new HttpResponseException(response([

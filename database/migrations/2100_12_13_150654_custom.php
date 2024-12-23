@@ -5,13 +5,11 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
+    public function up(): void {
         DB::unprepared('
             DROP VIEW IF EXISTS view_peminjaman;
             CREATE VIEW view_peminjaman AS
@@ -25,7 +23,8 @@ return new class extends Migration
                 a.tanggal_peminjaman,
                 a.tanggal_pengembalian,
                 a.status,
-                a.created_at
+                a.created_at,
+                a.updated_at
             FROM peminjaman a
             INNER JOIN bukus b ON a.isbn = b.isbn
             INNER JOIN users c ON a.user_id = c.id;
@@ -35,8 +34,7 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
-    {
+    public function down(): void {
         //
     }
 };
