@@ -15,13 +15,13 @@ class UserSeeder extends Seeder {
         User::create([
             'id' => '9dc0b676-c615-414d-a303-15ea13a48b75',
             'nama' => 'Serafim Sitorus',
-            'password' => Hash::make('serafim123'),
+            'password' => Hash::make('password'),
             'email' => 'edgar@gmail.com',
             'token' => '123'
         ]);
         User::create([
             'nama' => 'Rifqi',
-            'password' => Hash::make('rifqi123'),
+            'password' => Hash::make('password'),
             'email' => 'rifqi@gmail.com',
             'status' => 'Admin',
             'token' => '124'

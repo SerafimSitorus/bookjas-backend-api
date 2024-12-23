@@ -18,60 +18,57 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 class BukuController extends Controller {
-    private function getBuku(User $user, string $isbn, $process): Buku
-    {
+    private function getBuku(User $user, string $isbn, $process): Buku {
         $buku = Buku::where('isbn', $isbn)->first();
         if (!($process == 'get')) {
             if ($user->status != 'Admin') {
                 throw new HttpResponseException(response([
                     'errors' => [
-                        'message' => ["Unauthorized"]
+                        'message' => 'Unauthorized'
                     ]
                 ], 401));
             }
         }
 
         if (!$buku) {
-            throw new HttpResponseException(response()->json(
-                [
-                    'errors' => [
-                        'message' => ["Buku not found"]
-                    ]
+            throw new HttpResponseException(response()->json([
+                'errors' => [
+                    'message' => 'Buku tidak ditemukan'
                 ]
-            )->setStatusCode(404));
+            ])->setStatusCode(404));
         }
         
         return $buku;
     }
 
-    public function create(BukuCreateRequest $request)
-    {
-        // return $request->file('sampul');
+    public function create(BukuCreateRequest $request) {
         $data = $request->validated();
         $user = Auth::user();
         if ($user->status != 'Admin') {
             throw new HttpResponseException(response([
                 'errors' => [
-                    'message' => ["Unauthorized"]
+                    'message' => ['Unauthorized']
                 ]
             ], 401));
         }
 
-        $sampulDatabase = Str::random(20);
+        /* $sampulDatabase = Str::random(20);
         $sampulStorage = $sampulDatabase . '.jpg';
         $sampulDatabase = 'image/' . $sampulDatabase . '.jpg';
         $data['sampul'] = $sampulDatabase;
-        $request->file('sampul')->move(storage_path('app\\public\\image'), $sampulStorage);
+        $request->file('sampul')->move(storage_path('app\\public\\image'), $sampulStorage); */
 
         $buku = new Buku($data);
-        $buku->save();
+        try {
+            $buku->save();
+        } catch (\Throwable $th) {
+            return response()->json(['errors' => ['kategori' => ['Kategori tidak ada']]], 400);
+        }
 
-        // dd($sampulStorage, $sampulDatabase, $buku);
-        return (new BukuResource($buku))->response()->setStatusCode(201);
+        return response()->json(['message' => 'Buku berhasil ditambah']);
     }
 
-    public function get(string $isbn): BukuResource
-    {
+    public function get(string $isbn): BukuResource {
         $user = Auth::user();
         $buku = $this->getBuku($user, $isbn, 'get');
 
@@ -109,42 +106,48 @@ class BukuController extends Controller {
         return response()->json(['data' => $newestBooks]);
     }
 
-    public function update(string $isbn, BukuUpdateRequest $request)
-    {
+    public function update(string $isbn, BukuUpdateRequest $request) {
         $data = $request->validated();
         $user = Auth::user();
         $buku = $this->getBuku($user, $isbn, 'update');
 
-        if ($request->hasFile('sampul')) 
-        {
+        /* if ($request->hasFile('sampul')) {
             $sampulDatabase = Str::random(20);
             $sampulStorage = $sampulDatabase . '.jpg';
             $sampulDatabase = 'image/' . $sampulDatabase . '.jpg';
             $data['sampul'] = $sampulDatabase;
             Storage::delete('public/' . $buku->sampul);
             $request->file('sampul')->move(storage_path('app\\public\\image'), $sampulStorage);
-        }
+        } */
 
         $buku->fill($data);
-        $buku->save();
+        try {
+            $buku->save();
+        } catch (\Throwable $th) {
+            return response()->json(['errors' => ['kategori' => ['Kategori tidak ada']]], 400);
+        }
 
-        return new BukuResource($buku);
+        return response()->json(['message' => 'Buku berhasil diubah']);
     }
 
-    public function delete(string $isbn): JsonResponse
-    {
+    public function delete(string $isbn): JsonResponse {
         $user = Auth::user();
         $buku = $this->getBuku($user, $isbn, 'delete');
-        Storage::delete('public/' . $buku->sampul);
-        $buku->delete();
+
+        // Storage::delete('public/' . $buku->sampul);
+
+        try {
+            $buku->delete();
+        } catch (\Throwable $th) {
+            return response()->json(['errors' => ['message' => 'Buku sudah pernah dipinjam']], 400);
+        }
 
         return response()->json([
-            'data' => true
+            'message' => 'Buku berhasil dihapus'
         ], 200);
     }
 
-    public function getListByKategori(string $kategori): JsonResponse
-    {
+    public function getListByKategori(string $kategori): JsonResponse {
         $bukus = Buku::where('kategori', $kategori)->get();
 
         return (BukuResource::collection($bukus))->response()->setStatusCode(200);

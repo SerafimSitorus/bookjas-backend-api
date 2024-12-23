@@ -6,13 +6,11 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class BukuCreateRequest extends FormRequest
-{
+class BukuCreateRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
-    {
+    public function authorize(): bool {
         return ($this->user() != null && $this->user()->status == 'Admin');
     }
 
@@ -21,8 +19,7 @@ class BukuCreateRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
-    {
+    public function rules(): array {
         return [
             "isbn" => ['required', 'string', 'max:13', 'unique:bukus'],
             "sampul" => ['required'],
@@ -31,7 +28,7 @@ class BukuCreateRequest extends FormRequest
             "penulis" => ['required', 'string', 'max:255'],
             "penerbit" => ['required', 'string', 'max:255'],
             "deskripsi" => ['required', 'string'],       
-            "tahun_terbit" => ['required', 'string', 'max:24'],
+            "tahun_terbit" => ['required', 'string', 'max:4'],
             "jumlah_tersedia" => ['required', 'integer']
         ];
     }
@@ -40,6 +37,5 @@ class BukuCreateRequest extends FormRequest
         throw new HttpResponseException(response([
             'errors' => $validator->getMessageBag()
         ], 400)); 
-        
     }
 }

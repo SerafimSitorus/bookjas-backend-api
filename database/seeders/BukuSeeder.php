@@ -88,7 +88,7 @@ class BukuSeeder extends Seeder {
             'kategori' => 'Buku Pelajaran',
             'penulis' => 'Aiman Fathur',
             'penerbit' => 'Gramedia',
-            'deskripsi' => 'Buku pembelajaran biologi untuk kelas XI tingkat Madrasah Tsanawiyah.',
+            'deskripsi' => 'Buku pembelajaran fisika untuk kelas XI tingkat Madrasah Tsanawiyah.',
             'tahun_terbit' => '2021',
             'jumlah_tersedia' => '15'
         ]);
