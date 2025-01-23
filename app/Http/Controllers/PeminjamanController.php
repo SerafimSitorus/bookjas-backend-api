@@ -21,9 +21,9 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use App\Http\Resources\ViewPeminjaman as ResourcesViewPeminjaman;
 use App\Models\Buku;
 use Illuminate\Database\Eloquent\Casts\Json;
+use Illuminate\Support\Facades\DB;
 
-class PeminjamanController extends Controller
-{
+class PeminjamanController extends Controller {
     public function create(PeminjamanCreateRequest $request): JsonResponse
     {
         $data = $request->validated();
@@ -105,8 +105,7 @@ class PeminjamanController extends Controller
         return (SearchBuku::collection($buku))->response()->setStatusCode(200);
     }
 
-    public function searchUser(Request $request): JsonResponse
-    {
+    public function searchUser(Request $request): JsonResponse {
         $pengguna = $request->input('search');
         if ($pengguna) {
             $user = User::query();
@@ -129,8 +128,8 @@ class PeminjamanController extends Controller
         return (SearchUser::collection($user))->response()->setStatusCode(200);
     }
 
-    public function search(Request $request): ViewPeminjamanCollection {
-        $search = $request->input('search');
+    public function search(/* Request $request */): ViewPeminjamanCollection {
+        /* $search = $request->input('search');
         $peminjaman = ViewPeminjaman::query();
         
         if ($search) {
@@ -140,7 +139,26 @@ class PeminjamanController extends Controller
             });
         }
 
-        $peminjaman = $peminjaman->orderBy('updated_at', 'DESC')->get();
+        $peminjaman = $peminjaman->orderBy('updated_at', 'DESC')->get(); */
+
+        $peminjaman = DB::table('peminjaman as a')
+            ->select(
+                'a.user_id',
+                'b.isbn',
+                'b.sampul',
+                'b.judul',
+                'b.penulis',
+                'c.nama as peminjam',
+                'a.tanggal_peminjaman',
+                'a.tanggal_pengembalian',
+                'a.status',
+                'a.created_at',
+                'a.updated_at'
+            )
+            ->join('bukus as b', 'a.isbn', '=', 'b.isbn')
+            ->join('users as c', 'a.user_id', '=', 'c.id')
+            ->orderBy('a.updated_at', 'DESC')
+            ->get();
 
         if ($peminjaman->isEmpty()) {
             throw new HttpResponseException(response()->json([
@@ -156,13 +174,13 @@ class PeminjamanController extends Controller
             $tanggal_pinjam = Carbon::parse($p->tanggal_peminjaman);
             $tenggat = $tanggal_pinjam->addDays(7);
             $sisa_waktu = $tenggat->diffInDays(Carbon::now()) + 1;
-            $p['tenggat'] = $tenggat->format('Y-m-d');
+            $p->tenggat = $tenggat->format('Y-m-d');
             if($sisa_waktu == 1) {
-                $p['hari_tersisa'] = "Tenggat Hari Ini";
+                $p->hari_tersisa = "Tenggat Hari Ini";
             }else if($tenggat->isPast() && $p->status == "dipinjam"){
-                $p['hari_tersisa'] = "Lewat Tenggat"; 
+                $p->hari_tersisa = "Lewat Tenggat"; 
             }else{
-                $p['hari_tersisa'] = $sisa_waktu ." Hari Tersisa" ;
+                $p->hari_tersisa = $sisa_waktu ." Hari Tersisa" ;
             }
         }
 
@@ -170,19 +188,40 @@ class PeminjamanController extends Controller
     }
 
     public function getByUser(string $user_id): JsonResponse {
-        $peminjaman = ViewPeminjaman::where('user_id', $user_id)->orderBy('created_at', 'desc')->get();
+        $peminjaman = DB::table('peminjaman as a')
+            ->select(
+                'a.user_id',
+                'b.isbn',
+                'b.sampul',
+                'b.judul',
+                'b.penulis',
+                'c.nama as peminjam',
+                'a.tanggal_peminjaman',
+                'a.tanggal_pengembalian',
+                'a.status',
+                'a.created_at',
+                'a.updated_at'
+            )
+            ->join('bukus as b', 'a.isbn', '=', 'b.isbn')
+            ->join('users as c', 'a.user_id', '=', 'c.id')
+            ->where('a.user_id', $user_id)
+            ->orderBy('a.created_at', 'DESC')
+            ->get();
+
+        // $peminjaman = ViewPeminjaman::where('user_id', $user_id)->orderBy('created_at', 'desc')->get();
         // $waktu =  $peminjaman;
+
         foreach ($peminjaman as $p) {
             $tanggal_pinjam = Carbon::parse($p->tanggal_peminjaman);
             $tenggat = $tanggal_pinjam->addDays(7);
             $sisa_waktu = $tenggat->diffInDays(Carbon::now()) + 1;
-            $p['tenggat'] = $tenggat->format('Y-m-d');
+            $p->tenggat = $tenggat->format('Y-m-d');
             if($sisa_waktu == 1) {
-                $p['hari_tersisa'] = "Tenggat Hari Ini";
+                $p->hari_tersisa = "Tenggat Hari Ini";
             }else if($tenggat->isPast() && $p->status == "dipinjam"){
-                $p['hari_tersisa'] = "Lewat Tenggat"; 
+                $p->hari_tersisa = "Lewat Tenggat"; 
             }else{
-                $p['hari_tersisa'] = $sisa_waktu ." Hari Tersisa" ;
+                $p->hari_tersisa = $sisa_waktu ." Hari Tersisa" ;
             }
         }
 
