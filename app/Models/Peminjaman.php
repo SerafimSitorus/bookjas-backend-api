@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Peminjaman extends Model
-{
+class Peminjaman extends Model {
     use HasFactory;
-
+    
     protected $table = 'peminjaman';
+    protected $primaryKey = null;
+    public $incrementing = false;
 
     protected $fillable = [
         'user_id',
@@ -20,9 +21,4 @@ class Peminjaman extends Model
         'tanggal_pengembalian',
         'status'
     ];
-
-    protected $primaryKey = null;
-    public $incrementing = false;
-
-
 }
